@@ -4,4 +4,4 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ymonb1291/papyrus)
 ![GitHub](https://img.shields.io/github/license/ymonb1291/papyrus)
 
-**Papyrus** is a logger for **Deno**. But don't just it just yet, it's a work in progress!
+**Papyrus** is a logger for **Deno**. But don't use it just yet, it's a work in progress!
