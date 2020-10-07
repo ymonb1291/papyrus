@@ -1,5 +1,9 @@
+import type { Level } from "./level.enum.ts";
+
 export interface Log {
-  name?: string;
+  level: Level;
   message: string;
+  name?: string;
+  timestamp?: number;
   [key: string]: unknown;
 }
