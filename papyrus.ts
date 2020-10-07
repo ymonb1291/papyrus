@@ -45,39 +45,29 @@ export class Papyrus {
   }
 
   public debug(message: string): this {
-    this.logger(message, Level.debug);
-    return this;
+    return this.logger(message, Level.debug);
   }
 
   public error(message: string): this {
-    this.logger(message, Level.error);
-    return this;
+    return this.logger(message, Level.error);
   }
 
   public log(message: string): this {
-    this.logger(message, Level.log);
-    return this;
+    return this.logger(message, Level.log);
   }
 
   public trace(message: string): this {
-    this.logger(message, Level.trace);
-    return this;
+    return this.logger(message, Level.trace);
   }
 
   public warn(message: string): this {
-    this.logger(message, Level.warn);
-    return this;
+    return this.logger(message, Level.warn);
   }
 
-  private export(log: Log): this {
-    console.log(log);
-    return this;
-  }
-
-  private logger(message: string, level: Level): this {
-    if(level < this.configuration.internals.level) return this;
-
-    const log: Log = Object.assign({
+  /** Builds the initial Log */
+  private build(message: string, level: Level): Log {
+    // @Placeholder method
+   return Object.assign({
       level: level,
       name: this.configuration.name
     },
@@ -86,7 +76,36 @@ export class Papyrus {
     {
       message
     });
-    return this.export(log);
+  }
+
+  private logger(message: string, level: Level): this {
+    if(level < this.configuration.internals.level) return this;
+
+    let log: Log;
+
+    log = this.build(message, level);
+    log = this.transform(log);
+
+    return this.output(this.stringify(log));
+  }
+
+  /** Sends the prettified string to the destinations */
+  private output(log: string): this {
+    // @Placeholder method
+    console.log(log)
+    return this;
+  }
+
+  /** Stringifies the Log, either through JSON.stringify or by calling a prettifier */
+  private stringify(log: Log): string {
+    // @Placeholder method
+    return JSON.stringify(log);
+  }
+
+  /** Calls transformers that will successively edit properties of Log */
+  private transform(log: Log): Log {
+    // @Placeholder method
+    return Object.assign(log, {timestamp: String(log.timestamp), hello: "World"});
   }
 
   public get bindings(): KeyValuePair {
