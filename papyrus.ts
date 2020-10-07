@@ -12,6 +12,7 @@ export interface PapyrusOptions {
   name?: string;
   bindings?: KeyValuePair;
   level?: Level | keyof typeof Level;
+  timestamp?: boolean;
 }
 
 export class Papyrus {
@@ -35,7 +36,8 @@ export class Papyrus {
     let papyrusOptions: PapyrusOptions = {
       bindings: options.bindings,
       level: this.configuration.internals.level,
-      name: options.name
+      name: options.name,
+      timestamp: this.configuration.internals.timestamp
     };
     const logger = new Papyrus(papyrusOptions, this);
     this.children.push(logger);
@@ -79,6 +81,7 @@ export class Papyrus {
       level: level,
       name: this.configuration.name
     },
+    this.configuration.internals.timestamp ? {timestamp: new Date().getTime()} : {},
     this.configuration.bindings,
     {
       message
