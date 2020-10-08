@@ -122,7 +122,7 @@ export class Papyrus {
   }
 
   public get bindings(): KeyValuePair {
-    return this.configuration.ownBindings
+    return this.configuration.bindings;
   }
 
 }

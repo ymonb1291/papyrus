@@ -59,10 +59,6 @@ export class Configuration {
     return this.internals.name;
   }
 
-  public get ownBindings(): KeyValuePair {
-    return this.internals.bindings || {};
-  }
-
   private get isChild(): boolean {
     return this.parent ? true : false;
   }
