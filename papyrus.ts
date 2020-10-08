@@ -2,7 +2,6 @@ import { Configuration } from "./configuration.ts";
 import type { BaseLog, Log } from "./log.interface.ts";
 import type { KeyValuePair } from "./utils.ts";
 import { Level } from "./level.enum.ts";
-import { DEFAULT_LEVEL } from "./constants.ts";
 
 interface ChildOptions {
   name: string;
@@ -99,15 +98,20 @@ export class Papyrus {
     );
   }
 
+  /** Formats the Log, either through JSON.stringify or by calling a prettifier */
+  private format(log: Log): string {
+    // @Placeholder method
+    return JSON.stringify(log);
+  }
+
   private logger(message: string, level: Level): this {
     if(level < this.configuration.internals.level) return this;
 
     let log: Log;
 
     log = this.build(message, level);
-    log = this.transform(log);
 
-    return this.output(this.stringify(log));
+    return this.output(this.format(log));
   }
 
   /** Sends the prettified string to the destinations */
@@ -115,18 +119,6 @@ export class Papyrus {
     // @Placeholder method
     console.log(log)
     return this;
-  }
-
-  /** Stringifies the Log, either through JSON.stringify or by calling a prettifier */
-  private stringify(log: Log): string {
-    // @Placeholder method
-    return JSON.stringify(log);
-  }
-
-  /** Calls transformers that will successively edit properties of Log */
-  private transform(log: Log): Log {
-    // @Placeholder method
-  return Object.assign(log, {timestamp: String(log.timestamp), hello: "World"});
   }
 
   public get bindings(): KeyValuePair {
