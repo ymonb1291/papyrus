@@ -1,7 +1,8 @@
 import { Configuration } from "./configuration.ts";
-import type { Log } from "./log.interface.ts";
+import type { BaseLog, Log } from "./log.interface.ts";
 import type { KeyValuePair } from "./utils.ts";
 import { Level } from "./level.enum.ts";
+import { DEFAULT_LEVEL } from "./constants.ts";
 
 interface ChildOptions {
   name: string;
@@ -64,18 +65,38 @@ export class Papyrus {
     return this.logger(message, Level.warn);
   }
 
-  /** Builds the initial Log */
+  /** Builds a Log from a message and a level*/
   private build(message: string, level: Level): Log {
-    // @Placeholder method
-   return Object.assign({
+    // Create base Log
+    const log: BaseLog = {
       level: level,
       name: this.configuration.name
-    },
-    this.configuration.internals.timestamp ? {timestamp: new Date().getTime()} : {},
-    this.configuration.bindings,
-    {
-      message
-    });
+    };
+
+    // Add time to BaseLog
+    if(this.configuration.internals.timestamp) {
+      log.timestamp = new Date().getTime();
+    }
+
+    // Load the bindings
+    const bindings: KeyValuePair = this.configuration.bindings;
+    (Object.keys(log) as (keyof BaseLog)[])
+      .filter(prop => log[prop])
+      .forEach(prop => {
+        if(log[prop] && bindings.hasOwnProperty(prop)) {
+          delete bindings[prop];
+        }
+      });
+
+    // Return Log
+    return Object.assign(
+      {},
+      log,
+      bindings,
+      {
+        message
+      }
+    );
   }
 
   private logger(message: string, level: Level): this {
@@ -105,7 +126,7 @@ export class Papyrus {
   /** Calls transformers that will successively edit properties of Log */
   private transform(log: Log): Log {
     // @Placeholder method
-    return Object.assign(log, {timestamp: String(log.timestamp), hello: "World"});
+  return Object.assign(log, {timestamp: String(log.timestamp), hello: "World"});
   }
 
   public get bindings(): KeyValuePair {

@@ -1,9 +1,12 @@
 import type { Level } from "./level.enum.ts";
 
-export interface Log {
+export interface BaseLog {
   level: Level;
-  message: string;
   name?: string;
   timestamp?: number;
+}
+
+export interface Log extends BaseLog {
+  message: string;
   [key: string]: unknown;
 }
