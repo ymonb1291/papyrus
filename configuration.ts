@@ -1,4 +1,4 @@
-import { DEFAULT_LEVEL, DEFAULT_TIMESTAMP } from "./constants.ts";
+import { DEFAULT_LEVEL, DEFAULT_TIME } from "./constants.ts";
 import { Level } from "./level.enum.ts";
 import type { Papyrus, PapyrusOptions } from "./papyrus.ts";
 import type { KeyValuePair } from "./utils.ts";
@@ -7,7 +7,7 @@ interface Internals {
   name?: string;
   bindings: KeyValuePair;
   level: Level;
-  timestamp: boolean;
+  time: boolean;
 }
 
 export class Configuration {
@@ -25,7 +25,7 @@ export class Configuration {
       bindings: options.bindings || {},
       level: this.validateLevel(options.level),
       name: this.validateName(options.name),
-      timestamp: typeof options.timestamp === "boolean" ? options.timestamp : DEFAULT_TIMESTAMP
+      time: typeof options.time === "boolean" ? options.time : DEFAULT_TIME
     }
   }
 

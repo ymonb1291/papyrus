@@ -12,7 +12,7 @@ export interface PapyrusOptions {
   name?: string;
   bindings?: KeyValuePair;
   level?: Level | keyof typeof Level;
-  timestamp?: boolean;
+  time?: boolean;
 }
 
 export class Papyrus {
@@ -37,7 +37,7 @@ export class Papyrus {
       bindings: options.bindings,
       level: this.configuration.internals.level,
       name: options.name,
-      timestamp: this.configuration.internals.timestamp
+      time: this.configuration.internals.time
     };
     const logger = new Papyrus(papyrusOptions, this);
     this.children.push(logger);
@@ -73,7 +73,7 @@ export class Papyrus {
     };
 
     // Add time to BaseLog
-    if(this.configuration.internals.timestamp) {
+    if(this.configuration.internals.time) {
       log.timestamp = new Date().getTime();
     }
 
