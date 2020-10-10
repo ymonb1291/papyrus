@@ -3,6 +3,7 @@ import type { BaseLog, Log, LogPayload } from "./log.interface.ts";
 import type { KeyValuePair } from "./utils.ts";
 import type { DestinationOptions } from "./destination.ts";
 import { Level } from "./level.enum.ts";
+import { VERSION } from "./constants.ts";
 
 interface ChildOptions {
   bindings?: KeyValuePair;
@@ -234,6 +235,10 @@ export class Papyrus {
 
   public set enabled(value: boolean) {
     this.configuration.internals.enabled = value;
+  }
+
+  public get version(): string {
+    return VERSION;
   }
 
 }
