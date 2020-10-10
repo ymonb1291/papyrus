@@ -40,9 +40,13 @@ export class Papyrus {
   public child(options: ChildOptions): Papyrus {
     let papyrusOptions: PapyrusOptions = {
       bindings: options.bindings,
+      destination: this.configuration.internals.destination,
+      json: this.configuration.internals.json,
       level: this.configuration.internals.level,
+      mergePayload: this.configuration.internals.mergePayload,
       name: options.name,
-      time: this.configuration.internals.time
+      time: this.configuration.internals.time,
+      useLabels: this.configuration.internals.useLabels,
     };
     const logger = new Papyrus(papyrusOptions, this);
     this.children.push(logger);
