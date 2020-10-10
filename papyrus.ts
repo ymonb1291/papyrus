@@ -1,9 +1,9 @@
 import { Configuration } from "./configuration.ts";
-import type { BaseLog, Log, LogPayload } from "./log.interface.ts";
+import type { BaseLog, Log, LogPayload, VersionLog } from "./log.interface.ts";
 import type { KeyValuePair } from "./utils.ts";
 import type { DestinationOptions } from "./destination.ts";
 import { Level } from "./level.enum.ts";
-import { VERSION } from "./constants.ts";
+import { LOG_VERSION, VERSION } from "./constants.ts";
 
 interface ChildOptions {
   bindings?: KeyValuePair;
@@ -123,9 +123,11 @@ export class Papyrus {
 
   /** Initiate a Log*/
   private build(level: Level, ...data: unknown[]): Log {
+    const versionLog: VersionLog = {_v: LOG_VERSION};
     const baseLog: BaseLog = this.computeBaseLog(level);
     
     return Object.assign(
+      Object.create(versionLog),
       baseLog,
       this.computeBindings(baseLog),
       this.computePayload(baseLog, ...data),
@@ -187,7 +189,7 @@ export class Papyrus {
   private filterProps(readonly: KeyValuePair, editable: KeyValuePair): KeyValuePair {
     Object
       .keys(editable)
-      .filter(prop => !editable[prop] || readonly.hasOwnProperty(prop))
+      .filter(prop => !editable[prop] || readonly.hasOwnProperty(prop) || prop === "_v")
       .forEach(prop => {
         delete editable[prop];
       })
