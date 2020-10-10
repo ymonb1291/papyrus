@@ -12,6 +12,7 @@ interface Internals {
   useLabels: boolean;
   mergePayload: boolean;
   time: boolean;
+  json: boolean;
 }
 
 export class Configuration {
@@ -32,7 +33,8 @@ export class Configuration {
       useLabels: typeof options.useLabels === "boolean" ? options.useLabels : false,
       mergePayload: typeof options.mergePayload === "boolean" ? options.mergePayload : false,
       name: this.validateName(options.name),
-      time: typeof options.time === "boolean" ? options.time : DEFAULT_TIME
+      time: typeof options.time === "boolean" ? options.time : DEFAULT_TIME,
+      json: typeof options.json === "boolean" ? options.json : true,
     }
   }
 
@@ -64,6 +66,10 @@ export class Configuration {
 
   public get destination(): DestinationOptions[] {
     return this.internals.destination;
+  }
+
+  public get json(): boolean {
+    return this.internals.json;
   }
 
   public get mergePayload(): boolean {

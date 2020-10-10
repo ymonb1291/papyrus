@@ -16,6 +16,7 @@ export interface PapyrusOptions {
   useLabels?: boolean;
   time?: boolean;
   mergePayload?: boolean;
+  json?: boolean;
   destination?: DestinationOptions | DestinationOptions[];
 }
 
@@ -187,8 +188,7 @@ export class Papyrus {
 
   /** Format the Log, either through JSON.stringify or by calling a prettifier */
   private format(log: Log): Log | string {
-    // @Placeholder method
-    return JSON.stringify(log);
+    return this.configuration.json ? JSON.stringify(log) : log;
   }
 
   /** Initialize, format and print Log */
