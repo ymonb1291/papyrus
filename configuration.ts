@@ -1,5 +1,6 @@
 import { DEFAULT_LEVEL, DEFAULT_TIME } from "./constants.ts";
 import type { DestinationOptions } from "./destination.ts";
+import { Formatter } from "./formatter.ts";
 import { Level } from "./level.enum.ts";
 import type { Papyrus, PapyrusOptions } from "./papyrus.ts";
 import type { KeyValuePair } from "./utils.ts";
@@ -8,6 +9,7 @@ interface Internals {
   bindings: KeyValuePair;
   destination: DestinationOptions[];
   enabled: boolean;
+  formatter?: Formatter;
   json: boolean;
   level: Level;
   mergePayload: boolean;
@@ -31,6 +33,7 @@ export class Configuration {
       bindings: options.bindings || {},
       destination: Array.isArray(options.destination) ? options.destination : options.destination ? [options.destination] : [],
       enabled: typeof options.enabled === "boolean" ? options.enabled : true,
+      formatter: options.formatter,
       json: typeof options.json === "boolean" ? options.json : true,
       level: this.validateLevel(options.level),
       mergePayload: typeof options.mergePayload === "boolean" ? options.mergePayload : false,
@@ -72,6 +75,10 @@ export class Configuration {
 
   public get enabled(): boolean {
     return this.internals.enabled;
+  }
+
+  public get formatter(): Formatter | void {
+    return this.internals.formatter;
   }
 
   public get json(): boolean {

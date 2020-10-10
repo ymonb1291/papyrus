@@ -4,6 +4,7 @@ import type { KeyValuePair } from "./utils.ts";
 import type { DestinationOptions } from "./destination.ts";
 import { Level } from "./level.enum.ts";
 import { LOG_VERSION, VERSION } from "./constants.ts";
+import { Formatter } from "./formatter.ts";
 
 interface ChildOptions {
   bindings?: KeyValuePair;
@@ -15,6 +16,7 @@ export interface PapyrusOptions {
   bindings?: KeyValuePair;
   destination?: DestinationOptions | DestinationOptions[];
   enabled?: boolean;
+  formatter?: Formatter;
   json?: boolean;
   level?: Level | keyof typeof Level;
   mergePayload?: boolean;
@@ -45,6 +47,7 @@ export class Papyrus {
       bindings: options.bindings,
       destination: this.configuration.internals.destination,
       enabled: typeof options.enabled === "boolean" ? options.enabled : this.configuration.internals.enabled,
+      formatter: this.configuration.internals.formatter,
       json: this.configuration.internals.json,
       level: this.configuration.internals.level,
       mergePayload: this.configuration.internals.mergePayload,
@@ -196,9 +199,15 @@ export class Papyrus {
     return editable;
   }
 
-  /** Format the Log, either through JSON.stringify or by calling a prettifier */
+  /** Call a formatter, then convert to JSON */
   private format(log: Log): Log | string {
-    return this.configuration.json ? JSON.stringify(log) : log;
+    const formattedLog: string | Log = this.configuration.formatter
+      ? this.configuration.formatter.format(log)
+      : log;
+    
+    return this.configuration.json && typeof formattedLog !== "string"
+      ? JSON.stringify(formattedLog)
+      : formattedLog;
   }
 
   /** Initialize, format and print Log */
