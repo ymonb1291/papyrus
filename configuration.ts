@@ -9,6 +9,7 @@ interface Internals {
   bindings: KeyValuePair;
   destination: DestinationOptions[];
   level: Level;
+  useLabels: boolean;
   time: boolean;
 }
 
@@ -27,6 +28,7 @@ export class Configuration {
       bindings: options.bindings || {},
       destination: Array.isArray(options.destination) ? options.destination : options.destination ? [options.destination] : [],
       level: this.validateLevel(options.level),
+      useLabels: typeof options.useLabels === "boolean" ? options.useLabels : false,
       name: this.validateName(options.name),
       time: typeof options.time === "boolean" ? options.time : DEFAULT_TIME
     }
@@ -64,6 +66,10 @@ export class Configuration {
 
   public get name(): string | undefined {
     return this.internals.name;
+  }
+
+  public get useLabels(): boolean {
+    return this.internals.useLabels;
   }
 
   private get isChild(): boolean {

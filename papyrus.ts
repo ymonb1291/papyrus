@@ -13,6 +13,7 @@ export interface PapyrusOptions {
   name?: string;
   bindings?: KeyValuePair;
   level?: Level | keyof typeof Level;
+  useLabels?: boolean;
   time?: boolean;
   destination?: DestinationOptions | DestinationOptions[];
 }
@@ -70,7 +71,7 @@ export class Papyrus {
   private build(message: string, level: Level): Log {
     // Create base Log
     const log: BaseLog = {
-      level: level,
+      level: this.configuration.useLabels ? Level[level] : level,
       name: this.configuration.name
     };
 

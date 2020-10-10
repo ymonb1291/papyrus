@@ -1,7 +1,7 @@
 import type { Level } from "./level.enum.ts";
 
 export interface BaseLog {
-  level: Level;
+  level: Level | string;
   name?: string;
   timestamp?: number;
 }
