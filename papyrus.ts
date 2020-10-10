@@ -5,19 +5,19 @@ import type { DestinationOptions } from "./destination.ts";
 import { Level } from "./level.enum.ts";
 
 interface ChildOptions {
-  name: string;
   bindings?: KeyValuePair;
+  name: string;
 }
 
 export interface PapyrusOptions {
-  name?: string;
   bindings?: KeyValuePair;
-  level?: Level | keyof typeof Level;
-  useLabels?: boolean;
-  time?: boolean;
-  mergePayload?: boolean;
-  json?: boolean;
   destination?: DestinationOptions | DestinationOptions[];
+  json?: boolean;
+  level?: Level | keyof typeof Level;
+  mergePayload?: boolean;
+  name?: string;
+  time?: boolean;
+  useLabels?: boolean;
 }
 
 export class Papyrus {
@@ -145,10 +145,10 @@ export class Papyrus {
     let main: LogPayload | void;
     if(data[0] instanceof Error) {
       main = {
-        type: "error",
         errorName: data[0].name,
         message: data[0].message,
-        stack: data[0].stack || ""
+        stack: data[0].stack || "",
+        type: "error",
       };
     } else if(message) {
       main = {message}

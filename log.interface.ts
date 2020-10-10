@@ -13,10 +13,10 @@ export interface DefaultLogPayload {
 }
 
 export interface ErrorLogPayload {
-  type: "error";
   errorName: string;
   message: string;
   stack: string;
+  type: "error";
 }
 
 export type LogPayload = DefaultLogPayload | ErrorLogPayload | KeyValuePair;

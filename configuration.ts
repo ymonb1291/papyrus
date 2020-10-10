@@ -5,14 +5,14 @@ import type { Papyrus, PapyrusOptions } from "./papyrus.ts";
 import type { KeyValuePair } from "./utils.ts";
 
 interface Internals {
-  name?: string;
   bindings: KeyValuePair;
   destination: DestinationOptions[];
-  level: Level;
-  useLabels: boolean;
-  mergePayload: boolean;
-  time: boolean;
   json: boolean;
+  level: Level;
+  mergePayload: boolean;
+  name?: string;
+  time: boolean;
+  useLabels: boolean;
 }
 
 export class Configuration {
@@ -29,12 +29,12 @@ export class Configuration {
     return {
       bindings: options.bindings || {},
       destination: Array.isArray(options.destination) ? options.destination : options.destination ? [options.destination] : [],
+      json: typeof options.json === "boolean" ? options.json : true,
       level: this.validateLevel(options.level),
-      useLabels: typeof options.useLabels === "boolean" ? options.useLabels : false,
       mergePayload: typeof options.mergePayload === "boolean" ? options.mergePayload : false,
       name: this.validateName(options.name),
       time: typeof options.time === "boolean" ? options.time : DEFAULT_TIME,
-      json: typeof options.json === "boolean" ? options.json : true,
+      useLabels: typeof options.useLabels === "boolean" ? options.useLabels : false,
     }
   }
 
