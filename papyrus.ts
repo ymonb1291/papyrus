@@ -66,12 +66,12 @@ export class Papyrus {
     return this.logger(Level.error, ...data);
   }
 
-  // Log using level log
-  public log(message: string): this
-  public log(message: string, ...data: KeyValuePair[]): this
-  public log(...data: KeyValuePair[]): this
-  public log(...data: unknown[]): this {
-    return this.logger(Level.log, ...data);
+  // Log using level info
+  public info(message: string): this
+  public info(message: string, ...data: KeyValuePair[]): this
+  public info(...data: KeyValuePair[]): this
+  public info(...data: unknown[]): this {
+    return this.logger(Level.info, ...data);
   }
 
   // Log using level trace

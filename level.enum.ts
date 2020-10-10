@@ -1,7 +1,7 @@
 export enum Level {
   trace,
   debug,
-  log,
+  info,
   warn,
   error,
 }
