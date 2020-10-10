@@ -1,5 +1,5 @@
 import { Configuration } from "./configuration.ts";
-import type { BaseLog, Log } from "./log.interface.ts";
+import type { BaseLog, Log, LogPayload } from "./log.interface.ts";
 import type { KeyValuePair } from "./utils.ts";
 import type { DestinationOptions } from "./destination.ts";
 import { Level } from "./level.enum.ts";
@@ -15,6 +15,7 @@ export interface PapyrusOptions {
   level?: Level | keyof typeof Level;
   useLabels?: boolean;
   time?: boolean;
+  mergePayload?: boolean;
   destination?: DestinationOptions | DestinationOptions[];
 }
 
@@ -47,78 +48,161 @@ export class Papyrus {
     return logger;
   }
 
-  public debug(message: string): this {
-    return this.logger(message, Level.debug);
+  // Log using level debug
+  public debug(message: string): this
+  public debug(message: string, ...data: KeyValuePair[]): this
+  public debug(...data: KeyValuePair[]): this
+  public debug(...data: unknown[]): this {
+    return this.logger(Level.debug, ...data);
   }
 
-  public error(message: string): this {
-    return this.logger(message, Level.error);
+  // Log using level error
+  public error(message: string): this
+  public error(message: string, ...data: KeyValuePair[]): this
+  public error(...data: KeyValuePair[]): this
+  public error(error: Error): this
+  public error(error: Error, ...data: KeyValuePair[]): this
+  public error(...data: unknown[]): this {
+    return this.logger(Level.error, ...data);
   }
 
-  public log(message: string): this {
-    return this.logger(message, Level.log);
+  // Log using level log
+  public log(message: string): this
+  public log(message: string, ...data: KeyValuePair[]): this
+  public log(...data: KeyValuePair[]): this
+  public log(...data: unknown[]): this {
+    return this.logger(Level.log, ...data);
   }
 
-  public trace(message: string): this {
-    return this.logger(message, Level.trace);
+  // Log using level trace
+  public trace(message: string): this
+  public trace(message: string, ...data: KeyValuePair[]): this
+  public trace(...data: KeyValuePair[]): this
+  public trace(...data: unknown[]): this {
+    return this.logger(Level.trace, ...data);
   }
 
-  public warn(message: string): this {
-    return this.logger(message, Level.warn);
+  // Log using level warn
+  public warn(message: string): this
+  public warn(message: string, ...data: KeyValuePair[]): this
+  public warn(...data: KeyValuePair[]): this
+  public warn(error: Error): this
+  public warn(error: Error, ...data: KeyValuePair[]): this
+  public warn(...data: unknown[]): this {
+    return this.logger(Level.warn, ...data);
   }
 
-  /** Builds a Log from a message and a level*/
-  private build(message: string, level: Level): Log {
-    // Create base Log
-    const log: BaseLog = {
+  /** Initiate a BaseLog */
+  private computeBaseLog(level: Level): BaseLog {
+    // Create BaseLog with the non-optional properties
+    const baseLog: BaseLog = {
       level: this.configuration.useLabels ? Level[level] : level,
-      name: this.configuration.name
     };
+
+    // Add name to BaseLog
+    if(this.configuration.name) {
+      baseLog.name = this.configuration.name;
+    }
 
     // Add time to BaseLog
     if(this.configuration.internals.time) {
-      log.timestamp = new Date().getTime();
+      baseLog.time = new Date().getTime();
     }
 
-    // Load the bindings
-    const bindings: KeyValuePair = this.configuration.bindings;
-    (Object.keys(log) as (keyof BaseLog)[])
-      .filter(prop => log[prop])
-      .forEach(prop => {
-        if(log[prop] && bindings.hasOwnProperty(prop)) {
-          delete bindings[prop];
-        }
-      });
+    return baseLog;
+  }
 
-    // Return Log
+  /** Initiate a Log*/
+  private build(level: Level, ...data: unknown[]): Log {
+    const baseLog: BaseLog = this.computeBaseLog(level);
+    
     return Object.assign(
-      {},
-      log,
-      bindings,
-      {
-        message
-      }
+      baseLog,
+      this.computeBindings(baseLog),
+      this.computePayload(baseLog, ...data),
     );
   }
 
-  /** Formats the Log, either through JSON.stringify or by calling a prettifier */
-  private format(log: Log): string {
+  /** Return bindings where keys from BaseLog have been filtered off*/
+  private computeBindings(baseLog: BaseLog) {
+    return this.filterProps(baseLog, this.configuration.bindings);
+  }
+
+  /**
+   * Return an object with the payload of Log.
+   * The payload contains the message, the error and/or any optional object
+   */
+  private computePayload(baseLog: BaseLog, ...data: unknown[]): LogPayload {
+    // Extracts the message from data
+    const message = typeof data[0] === "string" ? data[0]: void 0;
+    // Extracts the error from data
+    const error = data[0] instanceof Error ? data[0]: void 0;
+    // Extracts the additional data
+    const add = data.slice(message || error ? 1 : 0, data.length);
+    
+    // Create an object that contains either the error or the message.
+    let main: LogPayload | void;
+    if(data[0] instanceof Error) {
+      main = {
+        type: "error",
+        errorName: data[0].name,
+        message: data[0].message,
+        stack: data[0].stack || ""
+      };
+    } else if(message) {
+      main = {message}
+    }
+
+    // Build LogPayload
+    if(main && !add.length) {
+      // Most common case: there is just a message and no add. Skip Object.assign() to go faster.
+      return main;
+    } else if(main && !this.configuration.mergePayload) { 
+      return {
+        message: message,
+        payload: Object.assign({}, ...add)
+      };   
+    } else if(!main && !this.configuration.mergePayload) { 
+      return {
+        payload: Object.assign({}, ...add)
+      };  
+    } else  {
+      return this.filterProps(
+        baseLog,
+        Object.assign({}, main, ...add)
+        );
+    }
+  }
+
+  /** Edit an object by removing all properties where the key is also found in another object */
+  private filterProps(readonly: KeyValuePair, editable: KeyValuePair): KeyValuePair {
+    Object
+      .keys(editable)
+      .filter(prop => !editable[prop] || readonly.hasOwnProperty(prop))
+      .forEach(prop => {
+        delete editable[prop];
+      })
+    return editable;
+  }
+
+  /** Format the Log, either through JSON.stringify or by calling a prettifier */
+  private format(log: Log): Log | string {
     // @Placeholder method
     return JSON.stringify(log);
   }
 
-  private logger(message: string, level: Level): this {
+  /** Initialize, format and print Log */
+  private logger(level: Level, ...data: unknown[]): this {
+    // Don't do anything if level is too low
     if(level < this.configuration.internals.level) return this;
 
-    let log: Log;
-
-    log = this.build(message, level);
-
+    // Initialize, format and print Log
+    let log: Log = this.build(level, ...data);
     return this.output(this.format(log));
   }
 
-  /** Sends the log to the destinations */
-  private output(log: string): this {
+  /** Send the log to the destinations */
+  private output(log: Log | string): this {
     if(this.configuration.destination.length) {
       this.configuration.destination.forEach(destination => {
         if(destination.use) {

@@ -1,8 +1,10 @@
+import { Log } from "./log.interface.ts";
+
 export interface DestinationOptions {
   use?: Destination;
 }
 
 export interface Destination {
-  log: (data: string) => void
+  log: (data: Log | string) => void;
 }
 

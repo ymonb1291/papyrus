@@ -10,6 +10,7 @@ interface Internals {
   destination: DestinationOptions[];
   level: Level;
   useLabels: boolean;
+  mergePayload: boolean;
   time: boolean;
 }
 
@@ -29,6 +30,7 @@ export class Configuration {
       destination: Array.isArray(options.destination) ? options.destination : options.destination ? [options.destination] : [],
       level: this.validateLevel(options.level),
       useLabels: typeof options.useLabels === "boolean" ? options.useLabels : false,
+      mergePayload: typeof options.mergePayload === "boolean" ? options.mergePayload : false,
       name: this.validateName(options.name),
       time: typeof options.time === "boolean" ? options.time : DEFAULT_TIME
     }
@@ -62,6 +64,10 @@ export class Configuration {
 
   public get destination(): DestinationOptions[] {
     return this.internals.destination;
+  }
+
+  public get mergePayload(): boolean {
+    return this.internals.mergePayload;
   }
 
   public get name(): string | undefined {
