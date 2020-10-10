@@ -1,6 +1,7 @@
 import { Configuration } from "./configuration.ts";
 import type { BaseLog, Log } from "./log.interface.ts";
 import type { KeyValuePair } from "./utils.ts";
+import type { DestinationOptions } from "./destination.ts";
 import { Level } from "./level.enum.ts";
 
 interface ChildOptions {
@@ -13,6 +14,7 @@ export interface PapyrusOptions {
   bindings?: KeyValuePair;
   level?: Level | keyof typeof Level;
   time?: boolean;
+  destination?: DestinationOptions | DestinationOptions[];
 }
 
 export class Papyrus {
@@ -114,10 +116,19 @@ export class Papyrus {
     return this.output(this.format(log));
   }
 
-  /** Sends the prettified string to the destinations */
+  /** Sends the log to the destinations */
   private output(log: string): this {
-    // @Placeholder method
-    console.log(log)
+    if(this.configuration.destination.length) {
+      this.configuration.destination.forEach(destination => {
+        if(destination.use) {
+          destination.use.log(log);
+        } else {
+          console.log(log);
+        }
+      });
+    } else {
+      console.log(log);
+    }
     return this;
   }
 
