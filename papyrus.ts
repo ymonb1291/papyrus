@@ -145,10 +145,10 @@ export class Papyrus {
     let main: LogPayload | void;
     if(data[0] instanceof Error) {
       main = {
+        type: "error",
         errorName: data[0].name,
         message: data[0].message,
         stack: data[0].stack || "",
-        type: "error",
       };
     } else if(message) {
       main = {message}
