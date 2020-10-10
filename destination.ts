@@ -1,7 +1,7 @@
 import { Log } from "./log.interface.ts";
 
 export interface DestinationOptions {
-  use?: Destination;
+  use: Destination;
 }
 
 export interface Destination {
