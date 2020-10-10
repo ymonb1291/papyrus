@@ -6,12 +6,14 @@ import { Level } from "./level.enum.ts";
 
 interface ChildOptions {
   bindings?: KeyValuePair;
+  enabled?: boolean;
   name: string;
 }
 
 export interface PapyrusOptions {
   bindings?: KeyValuePair;
   destination?: DestinationOptions | DestinationOptions[];
+  enabled?: boolean;
   json?: boolean;
   level?: Level | keyof typeof Level;
   mergePayload?: boolean;
@@ -41,6 +43,7 @@ export class Papyrus {
     let papyrusOptions: PapyrusOptions = {
       bindings: options.bindings,
       destination: this.configuration.internals.destination,
+      enabled: typeof options.enabled === "boolean" ? options.enabled : this.configuration.internals.enabled,
       json: this.configuration.internals.json,
       level: this.configuration.internals.level,
       mergePayload: this.configuration.internals.mergePayload,
@@ -198,7 +201,7 @@ export class Papyrus {
   /** Initialize, format and print Log */
   private logger(level: Level, ...data: unknown[]): this {
     // Don't do anything if level is too low
-    if(level < this.configuration.internals.level) return this;
+    if(level < this.configuration.internals.level || !this.enabled) return this;
 
     // Initialize, format and print Log
     let log: Log = this.build(level, ...data);
@@ -223,6 +226,14 @@ export class Papyrus {
 
   public get bindings(): KeyValuePair {
     return this.configuration.bindings;
+  }
+
+  public get enabled(): boolean {
+    return this.configuration.enabled;
+  }
+
+  public set enabled(value: boolean) {
+    this.configuration.internals.enabled = value;
   }
 
 }

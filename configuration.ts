@@ -7,6 +7,7 @@ import type { KeyValuePair } from "./utils.ts";
 interface Internals {
   bindings: KeyValuePair;
   destination: DestinationOptions[];
+  enabled: boolean;
   json: boolean;
   level: Level;
   mergePayload: boolean;
@@ -29,6 +30,7 @@ export class Configuration {
     return {
       bindings: options.bindings || {},
       destination: Array.isArray(options.destination) ? options.destination : options.destination ? [options.destination] : [],
+      enabled: typeof options.enabled === "boolean" ? options.enabled : true,
       json: typeof options.json === "boolean" ? options.json : true,
       level: this.validateLevel(options.level),
       mergePayload: typeof options.mergePayload === "boolean" ? options.mergePayload : false,
@@ -66,6 +68,10 @@ export class Configuration {
 
   public get destination(): DestinationOptions[] {
     return this.internals.destination;
+  }
+
+  public get enabled(): boolean {
+    return this.internals.enabled;
   }
 
   public get json(): boolean {
