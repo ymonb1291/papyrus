@@ -1,7 +1,15 @@
+/** Generic interface for plain objects */
 export interface KeyValuePair {
   [key: string]: unknown;
 }
 
+/**
+ * Iterates through the props of an object, and removes any that
+ * can be found in other "lookIn" objects.
+ * @param condition Enable filtering when true
+ * @param object Object who's props have to be filtered
+ * @param lookIn Object(s) who's keys will be filtered in object
+ */
 export function filterKeys(
   condition: boolean,
   object: KeyValuePair,
