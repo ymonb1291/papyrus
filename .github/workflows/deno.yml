@@ -27,6 +27,9 @@ jobs:
 
       - name: Deno Version
         run: deno --version
+      
+      - name: Cache Dependencies
+        run: deno cache deps_test.ts
 
       - name: Run Tests
         run: deno test -A --unstable
