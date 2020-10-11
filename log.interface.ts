@@ -1,30 +1,36 @@
-import type { Level } from "./level.enum.ts";
-import { KeyValuePair } from "./utils.ts";
+import type { KeyValuePair } from "./utils.ts";
 
-export interface VersionLog {
+export interface LogMetaData extends KeyValuePair {
   _v: number;
 }
 
-export interface BaseLog extends KeyValuePair {
-  level: Level | string;
-  name?: string;
-  time?: number;
+export interface Bindings extends KeyValuePair {
+  bindings?: KeyValuePair;
 }
 
-export interface DefaultLogPayload {
-  message?: string;
+export interface BaseLog extends Bindings {
+  level: number | string;
+  name?: string;
+  time?: number | string;
+}
+
+export interface LogPayload extends KeyValuePair {
   payload?: KeyValuePair;
 }
 
-export interface ErrorLogPayload {
+interface LogMessage extends LogPayload {
+  message?: string;
+};
+
+interface LogError extends LogPayload {
   errorName: string;
   message: string;
   stack: string;
   type: "error";
-}
+};
 
-export type LogPayload = DefaultLogPayload | ErrorLogPayload | KeyValuePair;
+export type LogBody = Partial<LogMessage> & Partial<LogError>;
 
-export type DefaultLog = VersionLog & BaseLog & DefaultLogPayload;
-export type ErrorLog = VersionLog & BaseLog & ErrorLogPayload;
-export type Log = DefaultLog | (VersionLog & BaseLog & Partial<ErrorLogPayload>);
+export interface LogWithMessage extends LogMetaData, BaseLog, LogMessage, LogPayload {}
+export interface LogWithError extends LogMetaData, BaseLog, LogError, LogPayload {}
+export interface Log extends LogMetaData, BaseLog, LogBody, LogPayload {}
