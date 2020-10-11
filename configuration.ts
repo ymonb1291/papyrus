@@ -70,9 +70,9 @@ export class Configuration {
     if(!name && !this.isChild) {
       return;
     } else if(!name) {
-      throw "A child logger must have a name";
+      throw new Error("A child logger must have a name");
     } else if(Configuration.names.includes(name)) {
-      throw `Only one logger can be named ${name}`;
+      throw new Error(`Only one logger can be named ${name}`);
     }
     Configuration.names.push(name);
     return name;
