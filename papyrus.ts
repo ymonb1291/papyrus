@@ -1,9 +1,9 @@
 import { Level } from "./level.enum.ts";
 import { Logger } from "./logger.ts";
 
-import type { DestinationOptions } from "./destination.ts";
 import type { Formatter } from "./formatter.ts";
 import type { KeyValuePair } from "./utils.ts";
+import type { TransportOptions } from "./transport.ts";
 
 interface ChildOptions {
   bindings?: KeyValuePair;
@@ -12,7 +12,6 @@ interface ChildOptions {
 
 export interface PapyrusOptions {
   bindings?: KeyValuePair;
-  destination?: DestinationOptions | DestinationOptions[];
   enabled?: boolean;
   formatter?: Formatter;
   json?: boolean;
@@ -21,6 +20,7 @@ export interface PapyrusOptions {
   mergePayload?: boolean;
   name?: string;
   time?: boolean;
+  transport?: TransportOptions | TransportOptions[];
   useLabels?: boolean;
 }
 
@@ -38,7 +38,6 @@ export class Papyrus extends Logger {
   public child(options: ChildOptions): Papyrus {
     let papyrusOptions: PapyrusOptions = {
       bindings: options.bindings,
-      destination: this.configuration.destination,
       enabled: this.configuration.enabled,
       formatter: this.configuration.formatter,
       json: this.configuration.json,
@@ -47,6 +46,7 @@ export class Papyrus extends Logger {
       mergePayload: this.configuration.mergePayload,
       name: options.name,
       time: this.configuration.time,
+      transport: this.configuration.transport,
       useLabels: this.configuration.useLabels,
     };
     const logger = new Papyrus(papyrusOptions, this);

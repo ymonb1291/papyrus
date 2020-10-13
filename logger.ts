@@ -3,7 +3,6 @@ import { LOG_VERSION } from "./constants.ts";
 import { Level } from "./level.enum.ts";
 import { filterKeys } from "./utils.ts";
 
-import type { Destination, DestinationOptions } from "./destination.ts";
 import type { Formatter } from "./formatter.ts";
 import type {
   BaseLog,
@@ -15,6 +14,7 @@ import type {
 } from "./log.interface.ts";
 import type { Papyrus, PapyrusOptions } from "./papyrus.ts";
 import type { KeyValuePair } from "./utils.ts";
+import type { Transport, TransportOptions } from "./transport.ts";
 
 export abstract class Logger {
   protected readonly configuration: Configuration;
@@ -162,16 +162,16 @@ export abstract class Logger {
       : formattedLog;
   }
 
-  /** Send the log to the default destination */
-  private handleDefaultDestination(formattedLog: Log | string) {
+  /** Send the log to the default transport */
+  private handleDefaultTransport(formattedLog: Log | string) {
     console.log(formattedLog);
   }
 
-  /** Send the log to a destination */
-  private handleDestination(log: Log | string, destinationOptions: DestinationOptions) {
-    const dest: Destination = destinationOptions.use || console;
-    const json: boolean = destinationOptions.json || false;
-    const formatter: Formatter | void = destinationOptions.formatter;
+  /** Send the log to a transport */
+  private handleTransport(log: Log | string, transportOptions: TransportOptions) {
+    const transport: Transport = transportOptions.use || console;
+    const json: boolean = transportOptions.json || false;
+    const formatter: Formatter | void = transportOptions.formatter;
 
     let formattedLog: string | Log = formatter
       ? formatter.format(log)
@@ -181,17 +181,17 @@ export abstract class Logger {
       ? JSON.stringify(formattedLog)
       : formattedLog;
     
-    dest.log(formattedLog);
+      transport.log(formattedLog);
   }
 
-  /** Send the log to the destinations */
+  /** Send the log to the transports */
   private output(log: Log | string): this {
-    if(this.configuration.destination.length) {
-      this.configuration.destination.forEach(destination => {
-        this.handleDestination(log, destination);
+    if(this.configuration.transport.length) {
+      this.configuration.transport.forEach(transport => {
+        this.handleTransport(log, transport);
       });
     } else {
-      this.handleDefaultDestination(log);
+      this.handleDefaultTransport(log);
     }
     return this;
   }

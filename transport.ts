@@ -1,13 +1,13 @@
 import type { Formatter } from "./formatter.ts";
 import type { Log } from "./log.interface.ts";
 
-export interface DestinationOptions {
-  use?: Destination;
+export interface TransportOptions {
+  use?: Transport;
   json?: boolean;
   formatter?: Formatter;
 }
 
-export interface Destination {
+export interface Transport {
   log: (data: Log | string) => void;
 }
 

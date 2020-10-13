@@ -8,14 +8,13 @@ import {
 } from "./constants.ts";
 import { Level } from "./level.enum.ts";
 
-import type { DestinationOptions } from "./destination.ts";
 import type { Formatter } from "./formatter.ts";
 import type { Papyrus, PapyrusOptions } from "./papyrus.ts";
 import type { KeyValuePair } from "./utils.ts";
+import type { TransportOptions } from "./transport.ts";
 
 interface Internals {
   bindings: KeyValuePair;
-  destination: DestinationOptions[];
   enabled: boolean;
   formatter?: Formatter;
   json: boolean;
@@ -24,6 +23,7 @@ interface Internals {
   mergePayload: boolean;
   name?: string;
   time: boolean;
+  transport: TransportOptions[];
   useLabels: boolean;
 }
 
@@ -40,7 +40,6 @@ export class Configuration {
   private computeInternals(options: PapyrusOptions): Internals {
     return {
       bindings: options.bindings || {},
-      destination: Array.isArray(options.destination) ? options.destination : options.destination ? [options.destination] : [],
       enabled: typeof options.enabled === "boolean" ? options.enabled : true,
       formatter: options.formatter,
       json: typeof options.json === "boolean" ? options.json : DEFAULT_JSON,
@@ -49,6 +48,7 @@ export class Configuration {
       mergePayload: typeof options.mergePayload === "boolean" ? options.mergePayload : DEFAULT_MERGE_META,
       name: this.validateName(options.name),
       time: typeof options.time === "boolean" ? options.time : DEFAULT_TIME,
+      transport: Array.isArray(options.transport) ? options.transport : options.transport ? [options.transport] : [],
       useLabels: typeof options.useLabels === "boolean" ? options.useLabels : DEFAULT_USE_LABELS,
     }
   }
@@ -81,10 +81,6 @@ export class Configuration {
   public get bindings(): KeyValuePair {
     const bindings = this.internals.bindings || {}
     return Object.assign({}, this.parent?.bindings, bindings);
-  }
-
-  public get destination(): DestinationOptions[] {
-    return this.internals.destination;
   }
 
   public get enabled(): boolean {
@@ -121,6 +117,10 @@ export class Configuration {
 
   public get time(): boolean {
     return this.internals.time;
+  }
+
+  public get transport(): TransportOptions[] {
+    return this.internals.transport;
   }
 
   private get isChild(): boolean {

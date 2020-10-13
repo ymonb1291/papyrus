@@ -3,7 +3,7 @@ import { Configuration } from "./configuration.ts";
 import { Papyrus } from "./papyrus.ts";
 import { DEFAULT_LEVEL } from "./constants.ts";
 import { Level } from "./level.enum.ts";
-import { Destination } from "./destination.ts";
+import { Transport } from "./transport.ts";
 import { Log } from "./log.interface.ts";
 import { Formatter } from "./formatter.ts";
 
@@ -43,10 +43,6 @@ Rhum.testPlan("configuration.ts", () => {
       Rhum.asserts.assertEquals(configuration.bindings, {});
     });
 
-    Rhum.testCase("'destination' getter returns an empty array", () => {
-      Rhum.asserts.assertEquals(configuration.destination, []);
-    });
-
     Rhum.testCase("'enabled' getter returns true", () => {
       Rhum.asserts.assertEquals(configuration.enabled, true);
     });
@@ -81,6 +77,10 @@ Rhum.testPlan("configuration.ts", () => {
 
     Rhum.testCase("'time' getter returns true", () => {
       Rhum.asserts.assertEquals(configuration.time, true);
+    });
+
+    Rhum.testCase("'transport' getter returns an empty array", () => {
+      Rhum.asserts.assertEquals(configuration.transport, []);
     });
 
   });
@@ -153,9 +153,9 @@ Rhum.testPlan("configuration.ts", () => {
 
   });
 
-  Rhum.testSuite("Destination", () => {
+  Rhum.testSuite("Transport", () => {
 
-    class TestDestination implements Destination {
+    class TestTransport implements Transport {
       public log(data: Log |string) {}
     }
 
@@ -165,23 +165,23 @@ Rhum.testPlan("configuration.ts", () => {
       }
     }
     const configuration = new Configuration({
-      destination: {
-        use: new TestDestination,
+      transport: {
+        use: new TestTransport,
         formatter: new TestFormatter,
         json: true
       },
     });
 
-    Rhum.testCase("'destination[0].use' property is a destination", () => {
-      Rhum.asserts.assert(configuration.destination[0].use instanceof TestDestination);
+    Rhum.testCase("'transport[0].use' property is a transport", () => {
+      Rhum.asserts.assert(configuration.transport[0].use instanceof TestTransport);
     });
 
-    Rhum.testCase("'destination[0].formatter' property is a formatter", () => {
-      Rhum.asserts.assert(configuration.destination[0].formatter instanceof TestFormatter);
+    Rhum.testCase("'transport[0].formatter' property is a formatter", () => {
+      Rhum.asserts.assert(configuration.transport[0].formatter instanceof TestFormatter);
     });
 
-    Rhum.testCase("'destination[0].json' property is true", () => {
-      Rhum.asserts.assert(configuration.destination[0].json);
+    Rhum.testCase("'transport[0].json' property is true", () => {
+      Rhum.asserts.assert(configuration.transport[0].json);
     });
     
   });
