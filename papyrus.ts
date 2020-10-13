@@ -1,28 +1,9 @@
 import { Level } from "./level.enum.ts";
 import { Logger } from "./logger.ts";
 
-import type { Formatter } from "./formatter.ts";
+import type { ChildOptions } from "./childoptions.interface.ts";
+import type { PapyrusOptions } from "./papyrusoptions.interface.ts";
 import type { KeyValuePair } from "./utils.ts";
-import type { TransportOptions } from "./transport.ts";
-
-interface ChildOptions {
-  bindings?: KeyValuePair;
-  name: string;
-}
-
-export interface PapyrusOptions {
-  bindings?: KeyValuePair;
-  enabled?: boolean;
-  formatter?: Formatter;
-  json?: boolean;
-  level?: Level | keyof typeof Level;
-  mergeBindings?: boolean;
-  mergePayload?: boolean;
-  name?: string;
-  time?: boolean;
-  transport?: TransportOptions | TransportOptions[];
-  useLabels?: boolean;
-}
 
 export class Papyrus extends Logger {
   private readonly children: Papyrus[] = [];

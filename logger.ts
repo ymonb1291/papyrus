@@ -12,7 +12,8 @@ import type {
   LogMetaData,
   LogPayload
 } from "./log.interface.ts";
-import type { Papyrus, PapyrusOptions } from "./papyrus.ts";
+import type { Papyrus } from "./papyrus.ts";
+import type { PapyrusOptions } from "./papyrusoptions.interface.ts";
 import type { KeyValuePair } from "./utils.ts";
 import type { Transport, TransportOptions } from "./transport.ts";
 

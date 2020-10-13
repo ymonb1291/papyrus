@@ -9,23 +9,11 @@ import {
 import { Level } from "./level.enum.ts";
 
 import type { Formatter } from "./formatter.ts";
-import type { Papyrus, PapyrusOptions } from "./papyrus.ts";
+import type { Internals } from "./internals.interface.ts";
+import type { Papyrus } from "./papyrus.ts";
+import type { PapyrusOptions } from "./papyrusoptions.interface.ts";
 import type { KeyValuePair } from "./utils.ts";
 import type { TransportOptions } from "./transport.ts";
-
-interface Internals {
-  bindings: KeyValuePair;
-  enabled: boolean;
-  formatter?: Formatter;
-  json: boolean;
-  level: Level;
-  mergeBindings: boolean;
-  mergePayload: boolean;
-  name?: string;
-  time: boolean;
-  transport: TransportOptions[];
-  useLabels: boolean;
-}
 
 export class Configuration {
   private static readonly names: string[] = []
