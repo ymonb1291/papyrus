@@ -5,6 +5,7 @@ export default Papyrus;
 // Named exports
 export { Level } from "./level.enum.ts";
 export { Papyrus } from "./papyrus.ts";
+export { PapyrusConsole } from "./papyrus_console.transport.ts";
 
 // Type exports
 export type { ChildOptions } from "./childoptions.interface.ts";

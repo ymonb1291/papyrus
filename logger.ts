@@ -1,5 +1,6 @@
 import { Configuration } from "./configuration.ts";
 import { LOG_VERSION } from "./constants.ts";
+import { PapyrusConsole } from "./papyrus_console.transport.ts";
 import { Level } from "./level.enum.ts";
 import { filterKeys } from "./utils.ts";
 
@@ -166,11 +167,6 @@ export abstract class Logger {
       : formattedLog;
   }
 
-  /** Send the log to the default transport */
-  private handleDefaultTransport(formattedLog: Log | string) {
-    console.log(formattedLog);
-  }
-
   /** Send the log to a transport */
   private handleTransport(log: Log | string, transportOptions: TransportOptions) {
     const transport: Transport = transportOptions.use || console;
@@ -195,7 +191,11 @@ export abstract class Logger {
         this.handleTransport(log, transport);
       });
     } else {
-      this.handleDefaultTransport(log);
+      this.handleTransport(
+        log,
+        {
+          use: new PapyrusConsole,
+        });
     }
     return this;
   }
