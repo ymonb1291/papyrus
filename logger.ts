@@ -111,13 +111,13 @@ export abstract class Logger {
     
     // Init LogBody with message or error
     let logBody: LogBody = {};
-    if(data[0] instanceof Error) {
+    if(error) {
       logBody = {
         type: "error",
-        errorName: data[0].name,
-        message: data[0].message,
-        stack: data[0].stack || "",
+        errorName: error.name,
+        message: error.message,
       };
+      if(error.stack) logBody.stack = error.stack;
     } else if(message) {
       logBody = {message}
     }

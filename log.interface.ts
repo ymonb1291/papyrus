@@ -25,7 +25,7 @@ interface LogMessage extends LogPayload {
 interface LogError extends LogPayload {
   errorName: string;
   message: string;
-  stack: string;
+  stack?: string;
   type: "error";
 };
 
