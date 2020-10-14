@@ -36,45 +36,56 @@ export class Papyrus extends Logger {
   }
   
   // Log using level debug
-  public debug(message: string): this
-  public debug(message: string, ...data: KeyValuePair[]): this
-  public debug(...data: KeyValuePair[]): this
+  public debug(): this;
+  public debug(message: string | number | boolean): this;
+  public debug(message: string | number | boolean, ...data: KeyValuePair[]): this;
+  public debug(...data: KeyValuePair[]): this;
+  public debug(error: Error): this;
+  public debug(error: Error, ...data: KeyValuePair[]): this;
   public debug(...data: unknown[]): this {
     return this.logger(Level.debug, ...data);
   }
   
   // Log using level error
-  public error(message: string): this
-  public error(message: string, ...data: KeyValuePair[]): this
-  public error(...data: KeyValuePair[]): this
-  public error(error: Error): this
-  public error(error: Error, ...data: KeyValuePair[]): this
+  public error(): this;
+  public error(message: string | number | boolean): this;
+  public error(message: string | number | boolean, ...data: KeyValuePair[]): this;
+  public error(...data: KeyValuePair[]): this;
+  public error(error: Error): this;
+  public error(error: Error, ...data: KeyValuePair[]): this;
   public error(...data: unknown[]): this {
     return this.logger(Level.error, ...data);
   }
   
   // Log using level info
-  public info(message: string): this
-  public info(message: string, ...data: KeyValuePair[]): this
-  public info(...data: KeyValuePair[]): this
+  public info(): this;
+  public info(message: string | number | boolean): this;
+  public info(message: string | number | boolean, ...data: KeyValuePair[]): this;
+  public info(...data: KeyValuePair[]): this;
+  public info(error: Error): this;
+  public info(error: Error, ...data: KeyValuePair[]): this;
   public info(...data: unknown[]): this {
     return this.logger(Level.info, ...data);
   }
   
   // Log using level trace
-  public trace(message: string): this
-  public trace(message: string, ...data: KeyValuePair[]): this
-  public trace(...data: KeyValuePair[]): this
+  public trace(): this;
+  public trace(message: string | number | boolean): this;
+  public trace(message: string | number | boolean, ...data: KeyValuePair[]): this;
+  public trace(...data: KeyValuePair[]): this;
+  public trace(error: Error): this;
+  public trace(error: Error, ...data: KeyValuePair[]): this;
   public trace(...data: unknown[]): this {
     return this.logger(Level.trace, ...data);
   }
   
   // Log using level warn
-  public warn(message: string): this
-  public warn(message: string, ...data: KeyValuePair[]): this
-  public warn(...data: KeyValuePair[]): this
-  public warn(error: Error): this
-  public warn(error: Error, ...data: KeyValuePair[]): this
+  public warn(): this;
+  public warn(message: string | number | boolean): this;
+  public warn(message: string | number | boolean, ...data: KeyValuePair[]): this;
+  public warn(...data: KeyValuePair[]): this;
+  public warn(error: Error): this;
+  public warn(error: Error, ...data: KeyValuePair[]): this;
   public warn(...data: unknown[]): this {
     return this.logger(Level.warn, ...data);
   }

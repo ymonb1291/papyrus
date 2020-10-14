@@ -30,7 +30,7 @@ export abstract class Logger {
   /** Handle the logging flow */
   protected logger(level: Level, ...data: unknown[]): this {
     // Stop flow if loggind disabled or level too low
-    if(level < this.configuration.level || !this.configuration.enabled || !data.length) return this;
+    if(level < this.configuration.level || !this.configuration.enabled) return this;
     
     // Initialize, format and print Log
     let log: Log = this.build(level, ...data);
@@ -102,22 +102,25 @@ export abstract class Logger {
   /** Build a LogBody object with filtered payload */
   private buildBody(baseLog: BaseLog, ...data: unknown[]): LogBody {
     // Extracts the message from data
-    const message: string | void = typeof data[0] === "string" ? data[0]: void 0;
+    const message: string | number | boolean | void = 
+      typeof data[0] === "string" || typeof data[0] === "number" || typeof data[0] === "boolean"
+        ? data[0]
+        : void 0;
     // Extracts the error from data
     const error: Error | void = data[0] instanceof Error ? data[0]: void 0;
     // Extracts the additional data
     const rawPayload: KeyValuePair[] = (data as KeyValuePair[]).slice(message || error ? 1 : 0, data.length);
     
-    
     // Init LogBody with message or error
     let logBody: LogBody = {};
     if(error) {
       logBody = {
-        type: "error",
-        errorName: error.name,
-        message: error.message,
+        error: {
+          message: error.message,
+          name: error.name,
+        }
       };
-      if(error.stack) logBody.stack = error.stack;
+      if(error.stack && logBody.error) logBody.error.stack = error.stack;
     } else if(message) {
       logBody = {message}
     }
