@@ -10,5 +10,7 @@ export { levelToNum, numToLevel } from "./utils.ts";
 
 // Type exports
 export type { ChildOptions } from "./child_options.interface.ts";
+export type { Formatter } from "./formatter.ts";
 export type { Log, LogWithError, LogWithMessage } from "./log.interface.ts";
 export type { PapyrusOptions } from "./papyrus_options.interface.ts";
+export type { Transport } from "./transport.ts";
