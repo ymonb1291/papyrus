@@ -2,7 +2,7 @@ import {
   DEFAULT_JSON,
   DEFAULT_LEVEL,
   DEFAULT_MERGE_BINDINGS,
-  DEFAULT_MERGE_META,
+  DEFAULT_MERGE_PAYLOAD,
   DEFAULT_TIME,
   DEFAULT_USE_LABELS
 } from "./constants.ts";
@@ -33,7 +33,7 @@ export class Configuration {
       json: typeof options.json === "boolean" ? options.json : DEFAULT_JSON,
       level: this.validateLevel(options.level),
       mergeBindings: typeof options.mergeBindings === "boolean" ? options.mergeBindings : DEFAULT_MERGE_BINDINGS,
-      mergePayload: typeof options.mergePayload === "boolean" ? options.mergePayload : DEFAULT_MERGE_META,
+      mergePayload: typeof options.mergePayload === "boolean" ? options.mergePayload : DEFAULT_MERGE_PAYLOAD,
       name: this.validateName(options.name),
       time: typeof options.time === "boolean" ? options.time : DEFAULT_TIME,
       transport: Array.isArray(options.transport) ? options.transport : options.transport ? [options.transport] : [],
