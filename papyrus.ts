@@ -1,8 +1,8 @@
 import { Level } from "./level.enum.ts";
 import { Logger } from "./logger.ts";
 
-import type { ChildOptions } from "./childoptions.interface.ts";
-import type { PapyrusOptions } from "./papyrusoptions.interface.ts";
+import type { ChildOptions } from "./child_options.interface.ts";
+import type { PapyrusOptions } from "./papyrus_options.interface.ts";
 import type { KeyValuePair } from "./utils.ts";
 
 export class Papyrus extends Logger {

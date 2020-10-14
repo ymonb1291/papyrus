@@ -11,7 +11,7 @@ import { Level } from "./level.enum.ts";
 import type { Formatter } from "./formatter.ts";
 import type { Internals } from "./internals.interface.ts";
 import type { Papyrus } from "./papyrus.ts";
-import type { PapyrusOptions } from "./papyrusoptions.interface.ts";
+import type { PapyrusOptions } from "./papyrus_options.interface.ts";
 import type { KeyValuePair } from "./utils.ts";
 import type { TransportOptions } from "./transport.ts";
 

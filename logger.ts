@@ -1,6 +1,6 @@
 import { Configuration } from "./configuration.ts";
 import { LOG_VERSION } from "./constants.ts";
-import { PapyrusConsole } from "./papyrus_console.transport.ts";
+import { PapyrusConsole } from "./console.transport.ts";
 import { Level } from "./level.enum.ts";
 import { filterKeys } from "./utils.ts";
 
@@ -14,7 +14,7 @@ import type {
   LogPayload
 } from "./log.interface.ts";
 import type { Papyrus } from "./papyrus.ts";
-import type { PapyrusOptions } from "./papyrusoptions.interface.ts";
+import type { PapyrusOptions } from "./papyrus_options.interface.ts";
 import type { KeyValuePair } from "./utils.ts";
 import type { Transport, TransportOptions } from "./transport.ts";
 
