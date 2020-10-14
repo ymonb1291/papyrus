@@ -3,9 +3,10 @@ import { Papyrus } from "./papyrus.ts";
 export default Papyrus;
 
 // Named exports
+export { PapyrusConsole } from "./console.transport.ts";
 export { Level } from "./level.enum.ts";
 export { Papyrus } from "./papyrus.ts";
-export { PapyrusConsole } from "./console.transport.ts";
+export { levelToNum, numToLevel } from "./utils.ts";
 
 // Type exports
 export type { ChildOptions } from "./child_options.interface.ts";

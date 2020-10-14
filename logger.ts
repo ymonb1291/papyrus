@@ -2,7 +2,7 @@ import { Configuration } from "./configuration.ts";
 import { LOG_VERSION } from "./constants.ts";
 import { PapyrusConsole } from "./console.transport.ts";
 import { Level } from "./level.enum.ts";
-import { filterKeys } from "./utils.ts";
+import { filterKeys, numToLevel } from "./utils.ts";
 
 import type { Formatter } from "./formatter.ts";
 import type {
@@ -57,7 +57,7 @@ export abstract class Logger {
   private buildBaseLog(level: Level): BaseLog {
     // Initiate a BaseLog with the non-optional properties
     const baseLog: BaseLog = {
-      level: this.configuration.useLabels ? Level[level] : level,
+      level: this.configuration.useLabels ? numToLevel(level) : level,
     };
 
     // Add name to BaseLog

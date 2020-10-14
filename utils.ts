@@ -1,3 +1,5 @@
+import { Level } from "./level.enum.ts";
+
 /** Generic interface for plain objects */
 export interface KeyValuePair {
   [key: string]: unknown;
@@ -34,4 +36,17 @@ export function filterKeys(
         }
       });
     return res;
+}
+
+/** Converts a level to a number */
+export function levelToNum(level: keyof typeof Level): Level | undefined {
+  return Level[level];
+}
+
+/** Converts numbers to levels */
+export function numToLevel(level: Level): keyof typeof Level;
+export function numToLevel(level: number): undefined;
+export function numToLevel(level: Level | number): keyof typeof Level | undefined {
+  if(level < 0 || level > Object.keys(Level).length/2-1) return;
+  return Level[level] as keyof typeof Level;
 }

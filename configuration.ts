@@ -12,7 +12,7 @@ import type { Formatter } from "./formatter.ts";
 import type { Internals } from "./internals.interface.ts";
 import type { Papyrus } from "./papyrus.ts";
 import type { PapyrusOptions } from "./papyrus_options.interface.ts";
-import type { KeyValuePair } from "./utils.ts";
+import { KeyValuePair, levelToNum, numToLevel } from "./utils.ts";
 import type { TransportOptions } from "./transport.ts";
 
 export class Configuration {
@@ -43,10 +43,10 @@ export class Configuration {
 
   /** Returns a valid level as number */
   private validateLevel(level?: Level | keyof typeof Level): Level {
-    if(level && typeof level !== "number") {
+    if(level && typeof level !== "number" && levelToNum(level)) {
       return Level[level];
     } else if(
-      typeof level === "number" && level >= 0 && level <= Object.keys(Level).length/2-1
+      typeof level === "number" && numToLevel(level)
       ) {
       return level;
     } 
