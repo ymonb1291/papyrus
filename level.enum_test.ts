@@ -1,6 +1,5 @@
 import { Rhum } from "./deps_test.ts";
-import { Level } from "./level.enum.ts";
-import { Papyrus } from "./papyrus.ts";
+import { Level, Papyrus } from "./mod.ts";
 
 Rhum.testPlan("level.enum.ts", () => {
 

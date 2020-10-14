@@ -1,8 +1,7 @@
 import { Rhum } from "./deps_test.ts";
 import { Configuration } from "./configuration.ts";
-import { Papyrus } from "./papyrus.ts";
 import { DEFAULT_LEVEL } from "./constants.ts";
-import { Level } from "./level.enum.ts";
+import { Level, Papyrus } from "./mod.ts";
 import { Transport } from "./transport.ts";
 import { Log } from "./log.interface.ts";
 import { Formatter } from "./formatter.ts";

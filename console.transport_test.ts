@@ -1,6 +1,7 @@
 import { Rhum } from "./deps_test.ts";
 import { PapyrusConsole } from "./mod.ts";
-import { Log } from "./log.interface.ts";
+
+import type { Log } from "./mod.ts";
 
 Rhum.testPlan("papyrus_console.transport_test.ts", () => {
 
