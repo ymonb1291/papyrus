@@ -7,6 +7,6 @@ export interface TransportOptions {
 }
 
 export interface Transport {
-  log: (data: string) => void;
+  log: (data: string, _v: number) => void;
 }
 

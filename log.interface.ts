@@ -1,9 +1,5 @@
 import type { KeyValuePair } from "./utils.ts";
 
-export interface LogMetaData extends KeyValuePair {
-  _v: number;
-};
-
 export interface Bindings extends KeyValuePair {
   bindings?: KeyValuePair;
 };
@@ -32,6 +28,6 @@ interface LogError extends LogPayload {
 
 export type LogBody = Partial<LogMessage> & Partial<LogError>;
 
-export interface LogWithMessage extends LogMetaData, BaseLog, LogMessage, LogPayload {};
-export interface LogWithError extends LogMetaData, BaseLog, LogError, LogPayload {};
-export interface Log extends LogMetaData, BaseLog, LogBody, LogPayload {};
+export interface LogWithMessage extends BaseLog, LogMessage, LogPayload {};
+export interface LogWithError extends BaseLog, LogError, LogPayload {};
+export interface Log extends BaseLog, LogBody, LogPayload {};

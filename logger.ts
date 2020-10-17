@@ -10,7 +10,6 @@ import type {
   Bindings,
   Log,
   LogBody,
-  LogMetaData,
   LogPayload
 } from "./log.interface.ts";
 import type { Papyrus } from "./papyrus.ts";
@@ -21,7 +20,7 @@ import type { Transport, TransportOptions } from "./transport.interface.ts";
 export abstract class Logger {
   protected readonly configuration: Configuration;
 
-  private readonly logMetaData: LogMetaData = {_v: LOG_VERSION};
+  private readonly _v: number = LOG_VERSION;
 
   constructor(options?: string | PapyrusOptions, parent?: Papyrus) {
     const opts = (!options || typeof options === "string") ? {name: options} : options;
@@ -44,10 +43,7 @@ export abstract class Logger {
     const baseLog: BaseLog = this.buildBaseLog(level);
     const logBody: LogBody = this.buildBody(baseLog, ...data);
     
-    // The log is created with metadata in the prototype
-    //  -> metadata can be accessed but are not visible when printing the log.
     return Object.assign(
-      Object.create(this.logMetaData),
       baseLog,
       logBody,
     );
@@ -94,8 +90,7 @@ export abstract class Logger {
     const bindings: Bindings = filterKeys(
       this.configuration.mergeBindings,
       this.configuration.bindings,
-      baseLog,
-      this.logMetaData
+      baseLog
     );    
     return this.configuration.mergeBindings ? bindings : {bindings};
   }
@@ -150,8 +145,7 @@ export abstract class Logger {
     const payload: KeyValuePair = filterKeys(
       this.configuration.mergePayload,
       Object.assign({}, ...rawPayload),
-      baseLog,
-      this.logMetaData
+      baseLog
     );
     return this.configuration.mergePayload ? payload : {payload};
   }
@@ -159,7 +153,7 @@ export abstract class Logger {
   /** Call a formatter, then convert to JSON */
   private format(log: Log): string {
     const formattedLog: string | Log = this.configuration.formatter
-      ? this.configuration.formatter.format(log)
+      ? this.configuration.formatter.format(log, this._v)
       : log;
     
     return typeof formattedLog !== "string"
@@ -173,10 +167,10 @@ export abstract class Logger {
     const formatter: Formatter | void = transportOptions.formatter;
 
     let formattedLog: string | Log = formatter
-      ? formatter.format(log)
+      ? formatter.format(log, this._v)
       : log;
     
-    transport.log(typeof formattedLog === "string" ? formattedLog : JSON.stringify(formattedLog));
+    transport.log(typeof formattedLog === "string" ? formattedLog : JSON.stringify(formattedLog), this._v);
   }
 
   /** Send the log to the transports */
