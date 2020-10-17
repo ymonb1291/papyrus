@@ -2,9 +2,9 @@ import { Rhum } from "./deps_test.ts";
 import { Configuration } from "./configuration.ts";
 import { DEFAULT_LEVEL } from "./constants.ts";
 import { Level, Papyrus } from "./mod.ts";
-import { Transport } from "./transport.ts";
-import { Log } from "./log.interface.ts";
-import { Formatter } from "./formatter.ts";
+import type { Transport } from "./transport.interface.ts";
+import type { Log } from "./log.interface.ts";
+import type { Formatter } from "./formatter.interface.ts";
 
 Rhum.testPlan("configuration.ts", () => {
 
@@ -50,10 +50,6 @@ Rhum.testPlan("configuration.ts", () => {
       Rhum.asserts.assertEquals(configuration.formatter, undefined);
     });
 
-    Rhum.testCase("'json' getter returns true", () => {
-      Rhum.asserts.assertEquals(configuration.json, true);
-    });
-
     Rhum.testCase("'level' getter returns the default level", () => {
       Rhum.asserts.assertEquals(configuration.level, DEFAULT_LEVEL);
     });
@@ -88,7 +84,6 @@ Rhum.testPlan("configuration.ts", () => {
 
     const configuration = new Configuration({
       enabled: false,
-      json: false,
       level: Level.error,
       mergeBindings: false,
       mergePayload: false,
@@ -99,10 +94,6 @@ Rhum.testPlan("configuration.ts", () => {
 
     Rhum.testCase("'enabled' getter returns false", () => {
       Rhum.asserts.assertEquals(configuration.enabled, false);
-    });
-
-    Rhum.testCase("'json' getter returns false", () => {
-      Rhum.asserts.assertEquals(configuration.json, false);
     });
 
     Rhum.testCase("'level' getter returns the default level", () => {
@@ -155,7 +146,7 @@ Rhum.testPlan("configuration.ts", () => {
   Rhum.testSuite("Transport", () => {
 
     class TestTransport implements Transport {
-      public log(data: Log |string) {}
+      public log(): void {}
     }
 
     class TestFormatter implements Formatter {
@@ -166,8 +157,7 @@ Rhum.testPlan("configuration.ts", () => {
     const configuration = new Configuration({
       transport: {
         use: new TestTransport,
-        formatter: new TestFormatter,
-        json: true
+        formatter: new TestFormatter
       },
     });
 
@@ -177,10 +167,6 @@ Rhum.testPlan("configuration.ts", () => {
 
     Rhum.testCase("'transport[0].formatter' property is a formatter", () => {
       Rhum.asserts.assert(configuration.transport[0].formatter instanceof TestFormatter);
-    });
-
-    Rhum.testCase("'transport[0].json' property is true", () => {
-      Rhum.asserts.assert(configuration.transport[0].json);
     });
     
   });
