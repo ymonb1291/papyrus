@@ -7,7 +7,6 @@ export interface Internals {
   bindings: KeyValuePair;
   enabled: boolean;
   formatter?: Formatter;
-  json: boolean;
   level: Level;
   mergeBindings: boolean;
   mergePayload: boolean;

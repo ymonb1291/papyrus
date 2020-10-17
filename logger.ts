@@ -35,7 +35,7 @@ export abstract class Logger {
     
     // Initialize, format and print Log
     let log: Log = this.build(level, ...data);
-    let formattedLog: Log | string = this.format(log);
+    let formattedLog: string = this.format(log);
     return this.output(formattedLog);
   }
   
@@ -157,35 +157,30 @@ export abstract class Logger {
   }
 
   /** Call a formatter, then convert to JSON */
-  private format(log: Log): Log | string {
+  private format(log: Log): string {
     const formattedLog: string | Log = this.configuration.formatter
       ? this.configuration.formatter.format(log)
       : log;
     
-    return this.configuration.json && typeof formattedLog !== "string"
+    return typeof formattedLog !== "string"
       ? JSON.stringify(formattedLog)
       : formattedLog;
   }
 
   /** Send the log to a transport */
-  private handleTransport(log: Log | string, transportOptions: TransportOptions) {
+  private handleTransport(log: string, transportOptions: TransportOptions) {
     const transport: Transport = transportOptions.use || console;
-    const json: boolean = transportOptions.json || false;
     const formatter: Formatter | void = transportOptions.formatter;
 
     let formattedLog: string | Log = formatter
       ? formatter.format(log)
       : log;
     
-    formattedLog = json && typeof formattedLog !== "string"
-      ? JSON.stringify(formattedLog)
-      : formattedLog;
-    
-      transport.log(formattedLog);
+    transport.log(typeof formattedLog === "string" ? formattedLog : JSON.stringify(formattedLog));
   }
 
   /** Send the log to the transports */
-  private output(log: Log | string): this {
+  private output(log: string): this {
     if(this.configuration.transport.length) {
       this.configuration.transport.forEach(transport => {
         this.handleTransport(log, transport);

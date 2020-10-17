@@ -7,7 +7,6 @@ export interface PapyrusOptions {
   bindings?: KeyValuePair;
   enabled?: boolean;
   formatter?: Formatter;
-  json?: boolean;
   level?: Level | keyof typeof Level;
   mergeBindings?: boolean;
   mergePayload?: boolean;

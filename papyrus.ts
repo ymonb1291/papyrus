@@ -21,7 +21,6 @@ export class Papyrus extends Logger {
       bindings: options.bindings,
       enabled: this.configuration.enabled,
       formatter: this.configuration.formatter,
-      json: this.configuration.json,
       level: this.configuration.level,
       mergeBindings: this.configuration.mergeBindings,
       mergePayload: this.configuration.mergePayload,

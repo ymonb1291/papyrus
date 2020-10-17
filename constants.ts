@@ -1,6 +1,5 @@
 import { Level } from "./level.enum.ts";
 
-export const DEFAULT_JSON: boolean = true;
 export const DEFAULT_LEVEL: Level = Level.trace;
 export const DEFAULT_MERGE_BINDINGS: boolean = true;
 export const DEFAULT_MERGE_PAYLOAD: boolean = true;

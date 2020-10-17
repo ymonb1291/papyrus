@@ -1,5 +1,4 @@
 import {
-  DEFAULT_JSON,
   DEFAULT_LEVEL,
   DEFAULT_MERGE_BINDINGS,
   DEFAULT_MERGE_PAYLOAD,
@@ -30,7 +29,6 @@ export class Configuration {
       bindings: options.bindings || {},
       enabled: typeof options.enabled === "boolean" ? options.enabled : true,
       formatter: options.formatter,
-      json: typeof options.json === "boolean" ? options.json : DEFAULT_JSON,
       level: this.validateLevel(options.level),
       mergeBindings: typeof options.mergeBindings === "boolean" ? options.mergeBindings : DEFAULT_MERGE_BINDINGS,
       mergePayload: typeof options.mergePayload === "boolean" ? options.mergePayload : DEFAULT_MERGE_PAYLOAD,
@@ -77,10 +75,6 @@ export class Configuration {
 
   public get formatter(): Formatter | undefined {
     return this.internals.formatter;
-  }
-
-  public get json(): boolean {
-    return this.internals.json;
   }
 
   public get level(): Level {
