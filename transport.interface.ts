@@ -1,4 +1,4 @@
-import type { Formatter } from "./formatter.ts";
+import type { Formatter } from "./formatter.interface.ts";
 import type { Log } from "./log.interface.ts";
 
 export interface TransportOptions {

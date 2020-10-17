@@ -1,7 +1,7 @@
-import { Formatter } from "./formatter.ts";
+import { Formatter } from "./formatter.interface.ts";
 import { Level } from "./level.enum.ts";
 import { KeyValuePair } from "./utils.ts";
-import { TransportOptions } from "./transport.ts";
+import { TransportOptions } from "./transport.interface.ts";
 
 export interface Internals {
   bindings: KeyValuePair;

@@ -1,4 +1,4 @@
-import type { Transport } from "./transport.ts";
+import type { Transport } from "./transport.interface.ts";
 import type { Log } from "./log.interface.ts";
 
 export class PapyrusConsole implements Transport {

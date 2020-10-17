@@ -8,12 +8,12 @@ import {
 } from "./constants.ts";
 import { Level } from "./level.enum.ts";
 
-import type { Formatter } from "./formatter.ts";
+import type { Formatter } from "./formatter.interface.ts";
 import type { Internals } from "./internals.interface.ts";
 import type { Papyrus } from "./papyrus.ts";
 import type { PapyrusOptions } from "./papyrus_options.interface.ts";
 import { KeyValuePair, levelToNum, numToLevel } from "./utils.ts";
-import type { TransportOptions } from "./transport.ts";
+import type { TransportOptions } from "./transport.interface.ts";
 
 export class Configuration {
   private static readonly names: string[] = []

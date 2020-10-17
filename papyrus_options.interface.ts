@@ -1,6 +1,6 @@
 import type { Level } from "./level.enum.ts";
-import type { Formatter } from "./formatter.ts";
-import type { TransportOptions } from "./transport.ts";
+import type { Formatter } from "./formatter.interface.ts";
+import type { TransportOptions } from "./transport.interface.ts";
 import type { KeyValuePair } from "./utils.ts";
 
 export interface PapyrusOptions {

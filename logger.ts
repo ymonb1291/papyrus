@@ -4,7 +4,7 @@ import { PapyrusConsole } from "./console.transport.ts";
 import { Level } from "./level.enum.ts";
 import { filterKeys, numToLevel } from "./utils.ts";
 
-import type { Formatter } from "./formatter.ts";
+import type { Formatter } from "./formatter.interface.ts";
 import type {
   BaseLog,
   Bindings,
@@ -16,7 +16,7 @@ import type {
 import type { Papyrus } from "./papyrus.ts";
 import type { PapyrusOptions } from "./papyrus_options.interface.ts";
 import type { KeyValuePair } from "./utils.ts";
-import type { Transport, TransportOptions } from "./transport.ts";
+import type { Transport, TransportOptions } from "./transport.interface.ts";
 
 export abstract class Logger {
   protected readonly configuration: Configuration;
