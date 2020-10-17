@@ -1,5 +1,5 @@
-import { Level } from "./level.enum.ts";
 import { Logger } from "./logger.ts";
+import { Level } from "./mod.ts";
 
 import type { ChildOptions } from "./child_options.interface.ts";
 import type { PapyrusOptions } from "./papyrus_options.interface.ts";

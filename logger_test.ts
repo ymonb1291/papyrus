@@ -1,9 +1,7 @@
-import { Transport } from "../papyrus-file/deps.ts";
 import { Rhum } from "./deps_test.ts";
-import { Formatter } from "./formatter.interface.ts";
-import { Log } from "./log.interface.ts";
-import { Logger } from "./logger.ts";
 import { Papyrus } from "./mod.ts";
+
+import type { Formatter, Log, Transport } from "./mod.ts";
 
 let output: string = "";
 let alternateConsole = function(data: string) {
